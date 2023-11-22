@@ -37,7 +37,7 @@ and
 npm run mongo-server
 ```
 
-and go to `localhost:4200` or `localhost:3000`.
+and go to `localhost:4200`.
 
 To start Electron version run the command
 
