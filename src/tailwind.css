@@ -1,0 +1,45 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+html, body {
+  height: 100%;
+  min-height: 100vh;
+}
+
+
+input.ng-dirty, textarea.ng-dirty {
+  border: 1px solid #3490dc;
+  background-color: #fff;
+}
+
+input.ng-valid, textarea.ng-valid {
+  border: 1px solid #007bff;
+  background-color: #f0fff4;
+}
+
+input.ng-invalid, textarea.ng-invalid {
+  border: 1px solid #e53e3e;
+  background-color: #fef2f2;
+}
+
+.pagination-previous, .pagination-next {
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination-previous.active, .pagination-next.active {
+  background-color: #0056b3;
+}
+.ngx-pagination a {
+  color: rgb(59 130 246) !important;
+}
+
+
+
+
+
+

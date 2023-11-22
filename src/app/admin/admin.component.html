@@ -1,0 +1,73 @@
+<div class="admin-container p-4">
+  <h2 class="text-xl font-semibold mb-4 dark:text-sky-300">Страница администратора</h2>
+
+<div class="form-group" *ngIf="!isAdminAuthenticated">
+  <label for="password" class="block font-semibold mb-1 dark:text-slate-400">Пароль</label>
+  <input type="password" name="password" [(ngModel)]="adminPassword" (keydown.enter)="loginAdmin()" class="block xl:w-1/5 sm:w-1/2 mb-5 rounded-md border-0 py-1.5 pl-3 pr-5 dark:bg-gray-600 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 dark:text-white"  pattern="admin"
+   />
+  <div *ngIf="!isAdminAuthenticated && adminPassword !== 'admin' && adminPassword.length > 0" class="text-red-500 text-sm mt-1 mb-4">
+    Введите пароль администратора
+  </div>
+</div>
+
+<button *ngIf="!isAdminAuthenticated" (click)="loginAdmin()" class="bg-blue-500 ease-in duration-300 hover:bg-blue-600 text-white py-2 px-4 rounded cursor-pointer">
+  Войти как администратор
+</button>
+
+<div *ngIf="isAdminAuthenticated">
+ <form #productForm="ngForm" novalidate class="space-y-4">
+  <div class="form-group">
+    <label for="name" class="block font-semibold mb-1 dark:text-slate-200">Название</label>
+    <input type="text" name="productName" [(ngModel)]="productName" required
+      class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white"/>
+    <div *ngIf="productForm!.controls['productName']?.invalid && (productForm.controls['productName']?.dirty || productForm.controls['productName']?.touched)" class="text-red-500 text-sm mt-1">
+      Название обязательно к заполнению и может содержать только буквы, пробелы и цифры
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="price" class="block font-semibold mb-1 dark:text-slate-200">Цена</label>
+    <input type="number" name="productPrice" [(ngModel)]="productPrice" required pattern="[0-9]*"
+      class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" />
+    <div *ngIf="productForm!.controls['productPrice']?.invalid && (productForm.controls['productPrice']?.dirty || productForm.controls['productPrice']?.touched)" class="text-red-500 text-sm mt-1">
+      Неверная цена
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="imageUrl" class="block font-semibold mb-1 dark:text-slate-200">URL изображения</label>
+    <input type="text" name="productImageUrl" [(ngModel)]="productImageUrl" required pattern="https?://[^\s/$.?#].[^\s]*"
+       class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" />
+    <div *ngIf="productForm!.controls['productImageUrl']?.invalid && (productForm.controls['productImageUrl']?.dirty || productForm.controls['productImageUrl']?.touched)" class="text-red-500 text-sm mt-1">
+      Неверный URL изображения
+    </div>
+    <div *ngIf="imageLoadError" class="text-red-500 text-sm mt-1">
+      {{ imageLoadError }}
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label for="description" class="block font-semibold mb-1 dark:text-slate-200">Описание</label>
+    <textarea name="productDescription" [(ngModel)]="productDescription" required
+      class="block w-full px-3 py-2 border rounded resize-none dark:bg-gray-600 dark:text-white"></textarea>
+    <div *ngIf="productForm!.controls['productDescription']?.invalid && (productForm!.controls['productDescription']?.dirty || productForm!.controls['productDescription']?.touched)" class="text-red-500 text-sm mt-1">
+      Описание обязательно к заполнению и может содержать только буквы, пробелы и цифры
+    </div>
+  </div>
+
+  <button [disabled]="!productForm?.valid" (click)="addProduct(productForm)"
+    class="bg-blue-500 text-white dark:text-white py-2 px-4 rounded cursor-pointer ease-in duration-300 hover:bg-blue-600"
+    [class.opacity-50]="!productForm?.valid">Добавить товар</button>
+</form>
+
+
+<h2 class="text-xl font-semibold mt-4 mb-4 dark:text-sky-300">Список добавленных товаров</h2>
+
+    <div *ngFor="let product of products" class="ml-2 mr-2 dark:text-slate-200">
+      <span>{{ product.name }}</span>
+      <img [src]="product.imageUrl" alt="{{ product.name }} Image" class="w-32 h-32 object-cover border-2 border-gray-300 rounded-lg">
+       <button (click)="deleteProduct(product)" class="text-red-500 ml-2">Удалить</button>
+    </div>
+
+<!-- </div> -->
+</div>

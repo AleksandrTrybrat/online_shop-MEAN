@@ -1,0 +1,10 @@
+<div *ngIf="!isCaptchaValid" class="text-center p-4">
+  <p class="text-lg font-semibold mb-2">Решите математическое выражение:</p>
+  <p class="text-xl">{{ num1 }} + {{ num2 }} = ?</p>
+  <input type="number" [(ngModel)]="userAnswer" class="mt-2 px-4 py-2 border rounded-md">
+  <button (click)="checkAnswer()" class="mt-2 px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md">Проверить</button>
+</div>
+
+<div *ngIf="isCaptchaValid" class="text-center p-4">
+  <p class="text-lg font-semibold">Проверка CAPTCHA пройдена!</p>
+</div>

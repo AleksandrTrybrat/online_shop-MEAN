@@ -1,0 +1,18 @@
+<div class="bg-red-500 h-screen flex flex-col items-center justify-center">
+  <ng-container *ngIf="!isUserBlocked || (isUserBlocked && !isBlockedDueToCaptcha)">
+    <div class="text-white text-center mb-4">
+      <h2 class="text-2xl font-semibold">Подтверждение, что вы не робот</h2>
+    </div>
+    <ng-container *ngIf="bypassAttempts < maxBypassAttempts">
+      <app-captcha (captchaValid)="onCaptchaValid($event, userId)"></app-captcha>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="isUserBlocked && isBlockedDueToCaptcha">
+    <div class="text-2xl font-semibold mt-2">
+      Ваш аккаунт заблокирован до {{ blockExpirationTime }}
+    </div>
+  </ng-container>
+</div>
+
+
+

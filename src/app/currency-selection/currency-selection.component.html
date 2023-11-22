@@ -1,0 +1,19 @@
+<div class="my-4">
+  <h3 class="text-lg font-semibold mb-2 dark:text-white">Выберите валюту:</h3>
+
+  <ul class="flex">
+    <li *ngFor="let currency of currencies" class="mb-2 dark:text-white mr-5 text-lg">
+      <label class="flex items-center space-x-2 cursor-pointer">
+        <input
+          type="radio"
+          [value]="currency.code"
+          (change)="selectCurrency(currency.code)"
+          [checked]="currency.code === currencyService.getSelectedCurrency()"
+          class="text-blue-500 focus:ring-2 focus:ring-blue-300 rounded-full"
+        />
+        <span>{{ currency.name }}</span>
+      </label>
+    </li>
+  </ul>
+</div>
+

@@ -1,0 +1,78 @@
+<div class="cart-container p-6">
+  <h2 class="text-2xl font-semibold mb-4 dark:text-sky-300">Корзина</h2>
+  <div *ngIf="cartItems.length === 0" class="text-gray-600 mb-4 dark:text-white">Корзина пуста</div>
+  <div *ngFor="let item of cartItems" class="cart-item  dark:bg-gray-800 bg-white rounded p-4 mb-4 shadow-md flex items-center">
+    <img [src]="item.imageUrl" alt="Product Image" class="cart-item-image w-20 h-20 object-contain mr-4">
+    <div class="cart-item-details">
+      <h3 class="text-lg font-semibold dark:text-slate-200 text-xl">{{ item.name }}</h3>
+      <p class="text-gray-600 dark:text-white text-lg">Цена за штуку: {{ getFormattedPrice(item.price) }}</p>
+      <p class="text-gray-600 dark:text-white text-lg">Количество: {{ item.quantity }}</p>
+      <div class="item-quantity dark:text-white">
+        <button (click)="decrementQuantity(item)" class="text-lg">-</button>
+        {{ item.quantity }}
+        <button (click)="incrementQuantity(item)" class="text-lg">+</button>
+      </div>
+      <div class="total-price mt-4">
+        <p class="text-xl font-semibold dark:text-slate-200">Сумма выбранного товара: {{ getFormattedPrice(calculateItemTotal(item)) }}</p>
+      </div>
+      <button (click)="removeFromCart(item)" class="remove-button dark:bg-sky-700 dark:hover:bg-sky-800 mt-2 px-4 py-1 rounded bg-red-500 text-white hover:bg-red-600 ease-in duration-300">Убрать из корзины</button>
+    </div>
+  </div>
+
+  <div class="total-price mt-4 mb-8 p-4 bg-gray-200 rounded-lg dark:bg-gray-800 dark:text-sky-300">
+    <p class="text-xl font-semibold">Общая сумма заказа: {{ getFormattedPrice(totalOrderPrice) }}</p>
+  </div>
+
+
+  <div>
+    <form (submit)="checkout()" #cartForm="ngForm" novalidate>
+      <div class="mb-3">
+        <label for="firsName" class="dark:text-slate-200">Фамилия:</label>
+        <input type="text" name="firsName" class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" [(ngModel)]="customerFirsName" placeholder="Фамилия" required pattern="[А-Яа-яЁё\s]+">
+        <div *ngIf="cartForm.controls['firsName']?.invalid && cartForm.controls['firsName']?.hasError('pattern')" class="text-red-500 text-sm mt-1">
+          Введите свою Фамилию кирилицей
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="secondName" class="dark:text-slate-200">Имя:</label>
+        <input type="text" name="secondName" class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" [(ngModel)]="customerSecondName" placeholder="Имя" required pattern="[А-Яа-яЁё\s]+">
+        <div *ngIf="cartForm.controls['secondName']?.invalid && cartForm.controls['secondName']?.hasError('pattern')" class="text-red-500 text-sm mt-1">
+          Введите свое Имя кирилицей
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="patronymic" class="dark:text-slate-200">Отчество:</label>
+        <input type="text" name="patronymic" class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" [(ngModel)]="customerPatronymic" placeholder="Отчество" required pattern="[А-Яа-яЁё\s]+">
+        <div *ngIf="cartForm.controls['patronymic']?.invalid && cartForm.controls['patronymic']?.hasError('pattern')" class="text-red-500 text-sm mt-1">
+          Введите свое Отчество кирилицей
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="email" class="dark:text-slate-200">Email адрес:</label>
+        <input type="text" name="email" class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" [(ngModel)]="customerEmail" placeholder="Email" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}">
+        <div *ngIf="cartForm.controls['email']?.invalid && cartForm.controls['email']?.hasError('pattern')" class="text-red-500 text-sm mt-1">
+          Поле обязательно к заполнению
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="phoneNumber" class="dark:text-slate-200">Номер телефона:</label>
+        <input type="text" name="phoneNumber" class="block w-full px-3 py-2 border rounded dark:bg-gray-600 dark:text-white" [(ngModel)]="customerPhoneNumber" placeholder="+38(000) 000 00 00" required pattern="(\+38)?0[0-9]{9}">
+        <div *ngIf="cartForm.controls['phoneNumber']?.invalid && cartForm.controls['phoneNumber']?.hasError('pattern')" class="text-red-500 text-sm mt-1">
+          Введите номер мобильного телефона
+        </div>
+      </div>
+      <button type="submit" [disabled]="!cartForm.valid" class="cursor-pointer px-6 py-2 rounded dark:bg-sky-600 dark:hover:bg-sky-700 bg-blue-500 text-white hover:bg-blue-600 ease-in duration-300">Оформить заказ</button>
+      <app-order-modal
+        *ngIf="isSuccessModalOpen"
+        [title]="'Спасибо, что выбрали наш магазин'"
+        [message]="'Ваш заказ был успешно отправлен'"
+        [isOpen]="isSuccessModalOpen"
+        (closeModalEvent)="isSuccessModalOpen = false">
+      </app-order-modal>
+
+    </form>
+  </div>
+
+</div>
+
+

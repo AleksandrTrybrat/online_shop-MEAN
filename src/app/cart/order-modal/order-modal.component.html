@@ -1,0 +1,11 @@
+<div class="fixed inset-0 flex items-center justify-center z-50" [ngClass]="{ hidden: !isOpen }" >
+  <div class="modal-overlay absolute w-full h-full bg-gray-800 opacity-50" (click)="closeModal()"></div>
+  <div class="modal-container bg-white w-11/12 md:max-w-md mx-auto rounded shadow-lg z-50 overflow-y-auto">
+    <div class="modal-content py-4 text-center px-6">
+      <div class="modal-header">
+        <h3 class="text-xl font-semibold">{{ title }}</h3>
+      </div>
+      <div class="modal-body">{{ message }}</div>
+    </div>
+  </div>
+</div>

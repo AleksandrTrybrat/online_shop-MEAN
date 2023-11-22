@@ -1,0 +1,31 @@
+<div class="container mx-auto p-4">
+  <input
+    type="text"
+    [(ngModel)]="filterText"
+    (input)="filterProducts()"
+    class="block w-full caret-blue-500 mb-5 rounded-md border-0 py-1.5 pl-7 pr-20 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6 dark:bg-gray-600 dark:text-white"
+    placeholder="Фильтр по названию"
+  >
+  <app-currency-selection></app-currency-selection>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mb-3">
+    <app-product-card
+      *ngFor="let product of filteredProducts | paginate: config"
+      class="bg-white p-4 border rounded shadow dark:bg-gray-700"
+      [product]="product"
+      [currencySymbol]="selectedCurrencySymbol"
+      (productClicked)="onProductClick(product)"
+    >
+    <a [routerLink]="['/product', product._id]"></a>
+    <div class="text-lg font-semibold">{{ getDisplayedPrice(product) }} ({{ product.currency }})</div>
+    <p>Цена: {{ product.priceInSelectedCurrency | currency: selectedCurrencySymbol }}</p>
+  </app-product-card>
+  </div>
+
+  <pagination-controls class="text-center" (pageChange)="config.currentPage = $event"></pagination-controls>
+
+  <button routerLink="/admin" class="mt-4 bg-blue-500 dark:bg-sky-600 dark:hover:bg-sky-700 ease-in duration-300 hover:bg-blue-600 text-white px-4 py-2 rounded">
+    Страница администратора
+  </button>
+</div>
+
